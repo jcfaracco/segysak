@@ -1351,6 +1351,13 @@ def segy_converter(
     ds.close()
     del ds
 
+    while True:
+        try:
+            with open(ncfile, "a") as f:
+                break
+        except OSError:
+            continue
+
     with h5netcdf.File(ncfile, "a") as seisnc:
         for var, darray in new_vars.items():
             seisnc_var = seisnc.create_variable(var, darray.dims, darray.dtype)
